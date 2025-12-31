@@ -6,7 +6,7 @@ public class JoystickLRRotation : MonoBehaviour,
 {
     private Vector3 idleRotation;
     private const float TURN_ANGLE = 50f;
-    [SerializeField] private int joystickID;
+    [SerializeField] private InputObjectState joystickLR;
 
     void Start()
     {
@@ -16,6 +16,7 @@ public class JoystickLRRotation : MonoBehaviour,
     public void OnPointerUp(PointerEventData eventData)
     {
         transform.localEulerAngles = idleRotation;
+        Debug.Log(joystickLR.state);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -24,10 +25,12 @@ public class JoystickLRRotation : MonoBehaviour,
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             newRotation.y = idleRotation.y - TURN_ANGLE;
+            joystickLR.state = InputObjectState.StateTypes.Positive;
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             newRotation.y = idleRotation.y + TURN_ANGLE;
+            joystickLR.state = InputObjectState.StateTypes.Negative;
         }
         transform.eulerAngles = newRotation;
     }
