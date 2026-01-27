@@ -16,6 +16,7 @@ public class JoystickLRRotation : MonoBehaviour,
     public void OnPointerUp(PointerEventData eventData)
     {
         transform.localEulerAngles = idleRotation;
+        joystickLR.state = InputObjectState.StateTypes.Neutral;
         Debug.Log(joystickLR.state);
     }
 

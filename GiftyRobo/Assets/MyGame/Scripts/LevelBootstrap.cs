@@ -1,10 +1,15 @@
 using UnityEngine;
 
-public class test : MonoBehaviour
+public class LevelBootstrap : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("Running Main Menu");
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
     }
 }

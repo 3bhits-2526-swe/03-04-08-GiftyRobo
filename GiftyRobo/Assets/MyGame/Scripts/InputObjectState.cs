@@ -10,8 +10,12 @@ public class InputObjectState : ScriptableObject
         Positive = 1
     }
     public StateTypes state;
-    private void OnEnable()
+    public void ResetState()
     {
         state = StateTypes.Neutral;
+    }
+    private void OnEnable()
+    {
+        ResetState();
     }
 }
