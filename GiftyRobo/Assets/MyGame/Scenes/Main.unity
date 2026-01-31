@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74be54a3272145e7d8504db37781c27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystickBT: {fileID: 11400000, guid: 0992c9058bf947b8f8039be7544aa605, type: 2}
+  joystickBT: {fileID: 11400000, guid: 18e737fde9ea56ea3b52e0239a55497d, type: 2}
 --- !u!65 &880199108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -616,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a94c4a87f26e4229a83f3351f32513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystickLR: {fileID: 11400000, guid: 72702b094e791fd669db92ad5ae4c70e, type: 2}
+  joystickLR: {fileID: 11400000, guid: 74c052f538c1cbd91a1163e0663449fa, type: 2}
 --- !u!65 &1965494938
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2034,7 +2034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8953cc6826d7a31b934819224821f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonA: {fileID: 11400000, guid: 9e977ca1314fd60e2a61692a08b53935, type: 2}
+  buttonA: {fileID: 11400000, guid: 8b543ddcc593cecb9a0a0d78d6cee0ad, type: 2}
 --- !u!33 &8498200359534978987
 MeshFilter:
   m_ObjectHideFlags: 0
