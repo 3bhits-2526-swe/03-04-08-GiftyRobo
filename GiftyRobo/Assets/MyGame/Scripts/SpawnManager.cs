@@ -3,10 +3,11 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
 
 public class SpawnManager : MonoBehaviour
 {
+    //public readonly int catsToSpawn = 2;
+    
     public static SpawnManager Instance { get; private set; }
 
     private static List<PlayerSpawnPoint> playerSpawnPoints;
@@ -17,6 +18,11 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject catPrefab;
     [SerializeField] private GameObject giftPrefab;
     [SerializeField] private GameState gameState;
+
+    private void OnEnable()
+    {
+        EndLevel.OnLevelComplete += DespawnPlayer;
+    }
 
     private void Awake()
     {
@@ -49,8 +55,6 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        SpawnCats();
-        SpawnGift();
         SpawnPlayer();
     }
 
@@ -67,7 +71,7 @@ public class SpawnManager : MonoBehaviour
         return playerSpawnPoints[index].transform;
     }
 
-    private static Transform FetchRandomGiftSpawn()
+    public static Transform FetchRandomGiftSpawn()
     {
         if (giftSpawnPoints == null || giftSpawnPoints.Count == 0)
         {
@@ -89,7 +93,7 @@ public class SpawnManager : MonoBehaviour
 
         int index = UnityEngine.Random.Range(0, catSpawnPoints.Count);
         Transform spawn = catSpawnPoints[index].transform;
-        catSpawnPoints.ToList();
+        catSpawnPoints.RemoveAt(index); // remove this cats spawnpoint to avoid 2 or multiple cats spawning on eachother
         return spawn;
     }
 
@@ -102,35 +106,8 @@ public class SpawnManager : MonoBehaviour
         SceneManager.MoveGameObjectToScene(player, gameObject.scene);
     }
 
-    private void SpawnCat()
+    private void DespawnPlayer()
     {
-        Transform? spawn = null;
-        while (spawn == null)
-        {
-            spawn = FetchRandomCatSpawn();
-        }
-        if (spawn == null) return;
-
-        GameObject cat = Instantiate(catPrefab, spawn.position, spawn.rotation);
-        SceneManager.MoveGameObjectToScene(cat, gameObject.scene);
-    }
-
-    public void SpawnGift()
-    {
-        Transform? spawn = null;
-        spawn =  FetchRandomGiftSpawn();
-        Debug.Log("SPAWNING GIFT");
-        GameObject gift = Instantiate(giftPrefab, spawn.position, spawn.rotation);
-        Debug.Log("SPAWNED GIFT");
-        gameState.giftState = GameState.GiftState.Spawned;
-        //SceneManager.MoveGameObjectToScene(gift, SceneManager.GetActiveScene());
-    }
-
-    private void SpawnCats()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            SpawnCat();
-        }
+        Destroy(FindObjectsByType<Player>(FindObjectsSortMode.None)[0]);
     }
 }

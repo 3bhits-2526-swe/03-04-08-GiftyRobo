@@ -3,49 +3,48 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private const float speed = 10f;
-    private int LRMovement = 0;
-    private int BTMovement = 0;
-
-    [SerializeField] private InputObjectState joystickLR;
-    [SerializeField] private InputObjectState joystickBT;
-    [SerializeField] private InputObjectState buttonA;
-    [SerializeField] private GameState gameState;
-    [SerializeField] private SpawnManager spawnManager;
-
+    private const float speed = 5f;
     private Rigidbody2D rb;
+
+    private int lrDir = 0; // -1, 0, 1
+    private int btDir = 0; // -1, 0, 1
+
+    public static Action<Collider2D> OnTouchGift;
+    public static Action<Collider2D> OnTouchCat;
+
+    [SerializeField] private GameState gameState;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void UpdateInputState()
+    private void OnEnable()
     {
-        InputObjectState.StateTypes stateLR = joystickLR.state;
-        InputObjectState.StateTypes stateBT = joystickBT.state;
-        LRMovement = stateLR switch
-        {
-            InputObjectState.StateTypes.Neutral => 0,
-            InputObjectState.StateTypes.Positive => 1,
-            InputObjectState.StateTypes.Negative => -1,
-            _ => 0
-        };
-        BTMovement = stateBT switch
-        {
-            InputObjectState.StateTypes.Neutral => 0,
-            InputObjectState.StateTypes.Positive => 1,
-            InputObjectState.StateTypes.Negative => -1,
-            _ => 0
-        };
+        JoystickLRRotation.OnJoystickLRChange += SetLRDirection;
+        JoystickBTRotation.OnJoystickBTChange += SetBTDirection;
     }
 
-    // Calculates and returns the current new Vector3 position of the player based on input.
-    private Vector2 GetUpdatedCoordinates()
+    private void OnDisable()
     {
-        Vector3 coords = transform.position;
-        coords.x += LRMovement * speed * Time.deltaTime;
-        coords.y += BTMovement * speed * Time.deltaTime;
-        return new Vector2(coords.x, coords.y);
+        JoystickLRRotation.OnJoystickLRChange -= SetLRDirection;
+        JoystickBTRotation.OnJoystickBTChange -= SetBTDirection;
+    }
+
+    private void SetLRDirection(int direction)
+    {
+        lrDir = direction;
+    }
+
+    private void SetBTDirection(int direction)
+    {
+        btDir = direction;
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2 move = new Vector2(lrDir, btDir) * (speed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + move);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -53,29 +52,15 @@ public class Player : MonoBehaviour
         bool isGift = other.CompareTag("Gift");
         bool isCat = other.CompareTag("Cat");
         bool giftEquipped = gameState.giftState == GameState.GiftState.Equipped;
+        
         if (isGift && !giftEquipped)
         {
-            Destroy(other.gameObject);
-            gameState.giftState = GameState.GiftState.Equipped;
-        }
-        else if (isCat && giftEquipped)
-        {
-            Destroy(other.gameObject);
-            spawnManager.SpawnGift();
-            gameState.CatsRemaining -= 1;
+            OnTouchGift?.Invoke(other);
         }
 
-        if (gameState.CatsRemaining == 0)
+        if (isCat && giftEquipped)
         {
-            Debug.Log("Quitting Application...");
-            Application.Quit();
+            OnTouchCat?.Invoke(other);
         }
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        UpdateInputState(); // Update LR- and BTMovement variables so we know what direction player wants to move.
-        rb.MovePosition(GetUpdatedCoordinates()); // Move player based on direction and input
     }
 }

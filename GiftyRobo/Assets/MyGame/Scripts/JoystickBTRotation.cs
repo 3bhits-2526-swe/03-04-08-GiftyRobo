@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class JoystickBTRotation : MonoBehaviour,
     IPointerDownHandler, IPointerUpHandler
@@ -7,6 +8,7 @@ public class JoystickBTRotation : MonoBehaviour,
     private Vector3 idleRotation;
     private const float TURN_ANGLE = 30f;
     [SerializeField] private InputObjectState joystickBT;
+    public static Action<int> OnJoystickBTChange;
 
     void Start()
     {
@@ -17,7 +19,8 @@ public class JoystickBTRotation : MonoBehaviour,
     {
         transform.localEulerAngles = idleRotation;
         joystickBT.state = InputObjectState.StateTypes.Neutral;
-        Debug.Log(joystickBT.state);
+
+        OnJoystickBTChange?.Invoke((int)joystickBT.state); // IMPORTANT
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -33,6 +36,7 @@ public class JoystickBTRotation : MonoBehaviour,
             newRotation.x = idleRotation.x - TURN_ANGLE;
             joystickBT.state = InputObjectState.StateTypes.Negative;
         }
+        OnJoystickBTChange?.Invoke((int)joystickBT.state);
         transform.eulerAngles = newRotation;
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class JoystickLRRotation : MonoBehaviour,
     IPointerDownHandler, IPointerUpHandler
@@ -7,6 +8,7 @@ public class JoystickLRRotation : MonoBehaviour,
     private Vector3 idleRotation;
     private const float TURN_ANGLE = 50f;
     [SerializeField] private InputObjectState joystickLR;
+    public static Action<int> OnJoystickLRChange;
 
     void Start()
     {
@@ -17,7 +19,8 @@ public class JoystickLRRotation : MonoBehaviour,
     {
         transform.localEulerAngles = idleRotation;
         joystickLR.state = InputObjectState.StateTypes.Neutral;
-        Debug.Log(joystickLR.state);
+
+        OnJoystickLRChange?.Invoke((int)joystickLR.state); // IMPORTANT
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -33,6 +36,7 @@ public class JoystickLRRotation : MonoBehaviour,
             newRotation.y = idleRotation.y + TURN_ANGLE;
             joystickLR.state = InputObjectState.StateTypes.Negative;
         }
+        OnJoystickLRChange?.Invoke((int)joystickLR.state); // notify
         transform.eulerAngles = newRotation;
     }
 }

@@ -1,7 +1,8 @@
-namespace MyGame.Scripts
+using UnityEngine;
+
+public class LevelEndscreenInput : MonoBehaviour
 {
-    public class LevelEndscreenInput
-    {
-        
-    }
+    [SerializeField] private InputObjectState joystickLR;
+    [SerializeField] private InputObjectState joystickBT;
+    [SerializeField] private InputObjectState buttonA;
 }
