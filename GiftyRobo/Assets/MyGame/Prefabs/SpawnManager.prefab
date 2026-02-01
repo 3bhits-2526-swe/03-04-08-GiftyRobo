@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d990a1ffa429929b19d0e56a62924a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1392125730865114668, guid: e77faff2337c3ba758a6827c1c52f3d3, type: 3}
-  catPrefab: {fileID: 6427011819695605176, guid: 53e1ddf0c1ac6e712a41fc6296578359, type: 3}
-  giftPrefab: {fileID: 1723594303725454122, guid: d2eb10b675458100aa9ff3873159dcf3, type: 3}
+  playerPrefab: {fileID: 545380074108186962, guid: 5ffca8d6457fc071681b719210e2d93f, type: 3}
+  catPrefab: {fileID: 774274046752081336, guid: ea2e1186c76379410a79c906fba092b2, type: 3}
+  giftPrefab: {fileID: 5063745691952216771, guid: afd2d0e63ee1532718984965bb6442f8, type: 3}
   gameState: {fileID: 11400000, guid: ef9315faabd1524458641fa3cf5d971b, type: 2}
